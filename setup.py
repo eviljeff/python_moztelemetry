@@ -17,8 +17,11 @@ setup(
     package_dir={'moztelemetry': 'moztelemetry'},
     install_requires=['boto', 'boto3', 'ujson', 'requests', 'protobuf==3.1.0',
                       'expiringdict', 'functools32', 'futures', 'py4j',
-                      'pandas>=0.14.1', 'numpy>=1.8.2', 'findspark', 
-                      'happybase', 'PyYAML', 'python-snappy'],
+                      'pandas>=0.14.1', 'numpy>=1.8.2', 'findspark',
+                      'happybase>=1.0.0', 'PyYAML', 'python-snappy'],
+    dependency_links=['https://github.com/wbolster/happybase/archive/33b7700375ba59f1810c30c8cd531577b0718498.zip#egg=happybase-1.0.1'],
     setup_requires=['pytest-runner', 'setuptools_scm'],
-    tests_require=['mock', 'pytest', 'moto', 'responses'],
+    # put pytest last to workaround this bug
+    # https://bitbucket.org/pypa/setuptools/issues/196/tests_require-pytest-pytest-cov-breaks
+    tests_require=['mock', 'pytest-timeout', 'moto', 'responses', 'pytest'],
 )

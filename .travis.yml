@@ -7,7 +7,7 @@ scala:
    - 2.10.4
 sudo: false
 env:
-  - SPARK_VERSION=1.6.1
+  - SPARK_VERSION=2.0.2
 before_install:
   - "wget https://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION-bin-hadoop2.6.tgz"
   # Install Python deps.
@@ -23,7 +23,7 @@ before_install:
 install:
   - conda env create -f environment.yml
   - source activate test-environment
-  - pip install .
+  - pip install . --process-dependency-links
   - pip install coverage
   - tar -xzvf spark-${SPARK_VERSION}-bin-hadoop2.6.tgz && export SPARK_HOME=`pwd`/spark-${SPARK_VERSION}-bin-hadoop2.6
   - wget https://archive.apache.org/dist/hbase/1.2.3/hbase-1.2.3-bin.tar.gz
@@ -31,7 +31,7 @@ install:
   - hbase-1.2.3/bin/start-hbase.sh
   - hbase-1.2.3/bin/hbase-daemon.sh start thrift
 script:
-  - coverage run --source=moztelemetry setup.py test
+  - coverage run --source=moztelemetry setup.py test --addopts "-v --timeout=60"
 after_success:
   - pip install coveralls
   - coveralls
